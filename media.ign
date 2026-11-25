@@ -1,0 +1,150 @@
+{
+  "ignition": {
+    "version": "3.6.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIjgC0fAOM0ACgBIrFwVZumigf8rl3fbtoMC4vz6kRx4 binarypenguin@rainbow-farts"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "directories": [
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/sonarr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/radarr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/seerr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/prowlarr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/profilarr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/maintainerr",
+        "user": {
+          "name": "core"
+          }
+        },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/bazarr",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/jellyfin",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/nzbget",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/qbittorrent",
+        "user": {
+          "name": "core"
+        }
+      },
+      {
+        "group": {
+          "name": "core"
+        },
+        "path": "/home/core/qui",
+        "user": {
+          "name": "core"
+        }
+      }
+    ],
+    "files": [
+      {
+        "path": "/var/lib/systemd/linger/core",
+        "mode": 420
+      },
+      {
+        "path": "/etc/systemd/zram-generator.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:;base64,IyBUaGlzIGNvbmZpZyBmaWxlIGVuYWJsZXMgYSAvZGV2L3pyYW0wIGRldmljZSB3aXRoIHRoZSBkZWZhdWx0IHNldHRpbmdzClt6cmFtMF0K"
+        },
+        "mode": 420
+      },
+      {
+        "overwrite": true,
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,media-NPE"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Layer packages with rpm-ostree\nWants=network-online.target\nAfter=network-online.target\n# We run before `zincati.service` to avoid conflicting rpm-ostree\n# transactions.\nBefore=zincati.service\nConditionPathExists=!/var/lib/%N.stamp\n\n[Service]\nType=oneshot\nRemainAfterExit=yes\n# `--allow-inactive` ensures that rpm-ostree does not return an error\n# if the package is already installed. This is useful if the package is\n# added to the root image in a future Fedora CoreOS release as it will\n# prevent the service from failing.\nExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive qemu-guest-agent\nExecStart=/bin/touch /var/lib/%N.stamp\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "rpm-ostree-install.service"
+      }
+    ]
+  }
+}
