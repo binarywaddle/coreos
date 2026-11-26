@@ -132,7 +132,7 @@
         "path": "/etc/hostname",
         "contents": {
           "compression": "",
-          "source": "data:,media-NPE"
+          "source": "data:,media02"
         },
         "mode": 420
       }
